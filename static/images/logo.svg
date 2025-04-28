@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Abstract snowflake/AC unit icon -->
+  <path d="M15 15L8 15M15 15L22 15M15 15L15 8M15 15L15 22M12 12L8 8M12 18L8 22M18 12L22 8M18 18L22 22"
+        stroke="#A498DE"
+        stroke-width="2"
+        stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>{{title}}</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <!-- Логотип/бренд -->
+    <a class="navbar-brand" href="/">
+      <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
+      <span class="logo-text">CoolLiveKlima</span>
+    </a>
+
+    <!-- Основное меню -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/install">Installation</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link about_us" href="#">About us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Reviews</a>
+        </li>
+      </ul>
+
+      <!-- Кнопки авторизации -->
+      <div class="d-flex">
+          {% if current_user.is_authenticated %}
+              <a class="navbar-brand logout" href="/logout">{{ current_user.name }}</a>
+          {% else %}
+              <form action="/login" method="get">
+                  <button type="submit" class="btn btn-primary entrance">Log in</button>
+              </form>
+              <form action="/register" method="get">
+                 <button type="submit" class="btn btn-primary sign_up">Sign up</button>
+              </form>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+</header>
+<!-- Begin page content -->
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>
