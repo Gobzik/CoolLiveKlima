@@ -73,39 +73,33 @@
 /* Центральная (нижняя) карусель */
 #carousel4, #carousel1, #carousel7, #carousel3, #carousel5, #carousel2, #carousel6 {
   width: 230px;
-  bottom: 700px
 }
 #carousel4 {
             align: center
         }
 
 #carousel3 {
-            bottom: 500px;
             left: calc(50% - 675px);
         }
 
 #carousel2 {
-            bottom: 300px;
             left: calc(50% - 950px);
         }
 
 #carousel1 {
-            bottom: 100px;
             left: calc(50% - 1220px);
         }
 
 #carousel5 {
-            bottom: 500px;
             left: calc(50% + -400px);
+
         }
 
 #carousel6 {
-            bottom: 300px;
             left: calc(50% + -130px);
         }
 
 #carousel7 {
-            bottom: 100px;
             left: calc(50% + 150px);
         }
 

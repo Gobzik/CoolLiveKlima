@@ -22,7 +22,6 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
-
     orders = orm.relationship("Order", back_populates='user')
 
     def set_password(self, password):

@@ -1,106 +1,193 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title or "Air Conditioner Installation" }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .logo-text {
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .hero-section {
+      background: url('{{ url_for("static", filename="images/aircool-bg.jpg") }}') no-repeat center center/cover;
+      color: white;
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+    }
+    .hero-section::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .features-section {
+      padding: 60px 0;
+    }
+    .feature-card {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      padding: 30px;
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    .cta-section {
+      background-color: #e9f5ff;
+      padding: 80px 0;
+      text-align: center;
+    }
+    .cta-buttons {
+      margin-top: 30px;
+    }
+    .cta-buttons .btn {
+      margin: 0 10px;
+      padding: 12px 30px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
 
-{% block content %}
-<h1 class="get_your_new">Get your new</h1>
-<h1 class="cond_sys">Air conditioner system</h1>
-<a class="nav-link active install" aria-current="page" href="/install">Install now</a>
+<!-- Header -->
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" height="40">
+        <span class="logo-text">CoolLiveKlima</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="/install">Installation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about_us">About us</a>
+          </li>
+        </ul>
+        <div class="d-flex">
+          {% if current_user.is_authenticated %}
+            <a class="navbar-brand logout" href="/user_account">{{ current_user.name }}</a>
+          {% else %}
+            <form action="/login" method="get">
+              <button type="submit" class="btn btn-primary entrance">Log in</button>
+            </form>
+            <form action="/register" method="get">
+              <button type="submit" class="btn btn-primary sign_up">Sign up</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
 
-<div class="container py-5">
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container hero-content" data-aos="fade-up">
+    <h1 class="display-4 fw-bold">Professional Air Conditioner Installation</h1>
+    <p class="lead mt-3">Fast. Reliable. Affordable. We bring cool comfort to your home or office.</p>
+    <a href="/about_us" class="btn btn-primary btn-lg mt-4">Learn More</a>
+  </div>
+</section>
 
-        <div class="angle-layout">
-            <!-- Верхний ряд -->
-            <div class="row-angle" style="z-index: 4;">
-                <div id="carousel1" class="carousel slide carousel-angle" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://i.pinimg.com/736x/e9/64/95/e964952c24113e187537dc924aa0f536.jpg" class="d-block w-100 carousel-img" alt="Карусель 1">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://i.pinimg.com/736x/3e/88/57/3e885700c8e98554ddbc5edc46d3de1b.jpg" class="d-block w-100 carousel-img" alt="Слайд 2">
-                        </div>
-                    </div>
-                </div>
+<!-- Features Section -->
+<section id="features" class="features-section bg-white">
+  <div class="container">
+    <h2 class="text-center mb-5" data-aos="fade-down">Why Choose Us</h2>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-card h-100">
+          <h5>Certified Installers</h5>
+          <p>All our technicians are certified professionals with years of experience.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-card h-100">
+          <h5>Quick Response</h5>
+          <p>We offer same-day or next-day installations to ensure your comfort quickly.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-card h-100">
+          <h5>Affordable Pricing</h5>
+          <p>Transparent and competitive pricing with no hidden fees or surprise costs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <div id="carousel7" class="carousel slide carousel-angle" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://i.pinimg.com/736x/ad/2b/65/ad2b65d462d8c3c91016dcdc6617276d.jpg" class="d-block w-100 carousel-img" alt="Карусель 7">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://i.pinimg.com/736x/98/fd/2c/98fd2c0e7a1f150b24de8a13e49422a2.jpg" class="d-block w-100 carousel-img" alt="Слайд 2">
-                        </div>
-                    </div>
-                </div>
+<!-- CTA Section -->
+<section class="cta-section" data-aos="fade-up">
+  <div class="container">
+    <h2>Ready to Enjoy Perfect Climate?</h2>
+    <p class="lead mt-3">Get a free estimate or schedule your installation today. Our team is ready to help you!</p>
+
+    <div class="cta-buttons">
+      <a href="/calculator" class="btn btn-primary btn-lg">Calculate Cost</a>
+      <a href="/install" class="btn btn-outline-primary btn-lg">Submit Request</a>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-dark text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5>CoolLiveKlima</h5>
+                <p>Professional air conditioning installation and service since 2010.</p>
             </div>
-
-            <!-- Второй ряд -->
-            <div class="row-angle" style="z-index: 3;">
-                <div id="carousel2" class="carousel slide carousel-angle" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://i.pinimg.com/736x/fc/79/e0/fc79e0a9de829b53ab88653916546e01.jpg" class="d-block w-100 carousel-img" alt="Карусель 2">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://i.pinimg.com/736x/6b/d0/5d/6bd05da25f33040ede631ddf593d499a.jpg" class="d-block w-100 carousel-img" alt="Слайд 2">
-                        </div>
-                    </div>
-                </div>
-
-                <div id="carousel6" class="carousel slide carousel-angle" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://i.pinimg.com/736x/75/c3/37/75c337112a320041ab31be1f66f0b6f4.jpg" class="d-block w-100 carousel-img" alt="Карусель 6">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://i.pinimg.com/736x/98/5e/d9/985ed965a216d02b86b2dae55c386fc3.jpg" class="d-block w-100 carousel-img" alt="Слайд 2">
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/install" class="text-white">Installation</a></li>
+                    <li><a href="/about_us" class="text-white">About Us</a></li>
+                    <li><a href="#" class="text-white">Reviews</a></li>
+                </ul>
             </div>
-
-            <!-- Третий ряд -->
-            <div class="row-angle" style="z-index: 2;">
-                <div id="carousel3" class="carousel slide carousel-angle" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://i.pinimg.com/736x/5c/1e/8f/5c1e8f26b20c9977db209d5813145b8a.jpg" class="d-block w-100 carousel-img" alt="Карусель 3">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://i.pinimg.com/736x/a4/15/b9/a415b9f87a09394ea9366c2a04f747e8.jpg" class="d-block w-100 carousel-img" alt="Слайд 2">
-                        </div>
-                    </div>
-                </div>
-
-                <div id="carousel5" class="carousel slide carousel-angle" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://i.pinimg.com/736x/40/d1/80/40d180edbc491fc062192e290913554c.jpg" class="d-block w-100 carousel-img" alt="Карусель 5">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://i.pinimg.com/736x/ae/ea/65/aeea65c5c02383f68cee1b09929f8019.jpg" class="d-block w-100 carousel-img" alt="Слайд 2">
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-4">
+                <h5>Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-telephone me-2"></i> +7 (495) 123-4567</li>
+                    <li><i class="bi bi-envelope me-2"></i> info@coolliveklima.ru</li>
+                    <li><i class="bi bi-geo-alt me-2"></i> Moscow, Russia</li>
+                </ul>
             </div>
-
-            <!-- Центральная (нижняя) карусель -->
-            <div class="row-angle" style="z-index: 1;">
-                <div id="carousel4" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://i.pinimg.com/736x/3b/04/5b/3b045bdc83cc0ca27cd0c6a4b9e45e54.jpg" class="d-block w-100 carousel-img" alt="Центральная карусель">
-                            <div class="carousel-caption d-none d-md-block">
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://i.pinimg.com/736x/78/1b/64/781b6444a5eeee1023272ce3e7ea9f7a.jpg" class="d-block w-100 carousel-img" alt="Слайд 2">
-                        </div>
-            </div>
+        </div>
+        <hr class="my-4">
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 CoolLiveKlima. All rights reserved.</p>
         </div>
     </div>
+</footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        </div>
-</div>
-{% endblock %}
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({ duration: 700, once: true });</script>
+
+</body>
+</html>

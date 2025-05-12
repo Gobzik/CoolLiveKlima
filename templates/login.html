@@ -1,29 +1,158 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Авторизация | CoolLiveKlima</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block content %}
-    <h1>Авторизация</h1>
+  <!-- Bootstrap и AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    body {
+      background-color: #f1f3f6;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .logo-text {
+      font-weight: bold;
+      margin-left: 10px;
+      color: #A498DE;
+    }
+    .animated-btn {
+      background-color: #A498DE;
+      color: white;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .animated-btn:hover {
+      background-color: #7F6AC4;
+      transform: scale(1.03);
+    }
+    .animated-input {
+      transition: all 0.3s ease;
+      border: 1px solid #ced4da;
+    }
+    .animated-input:focus {
+      border-color: #A498DE;
+      box-shadow: 0 0 0 0.2rem rgba(164, 152, 222, 0.25);
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" height="40">
+        <span class="logo-text">CoolLiveKlima</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="/install">Installation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about_us">About us</a>
+          </li>
+        </ul>
+        <div class="d-flex">
+          {% if current_user.is_authenticated %}
+            <a class="navbar-brand logout" href="/user_account">{{ current_user.name }}</a>
+          {% else %}
+            <form action="/login" method="get">
+              <button type="submit" class="btn btn-primary entrance">Log in</button>
+            </form>
+            <form action="/register" method="get">
+              <button type="submit" class="btn btn-primary sign_up">Sign up</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Login Form -->
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card shadow-lg p-4" style="max-width: 420px; width: 100%; border-radius: 20px; background-color: #ffffff;" data-aos="zoom-in">
+    <h2 class="text-center mb-4" style="color: #A498DE;">Authorization</h2>
     <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.email.label }}<br>
-            {{ form.email(class="form-control", type="email") }}<br>
-            {% for error in form.email.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(class="form-control", type="password") }}<br>
-            {% for error in form.password.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        <div>{{ message }}</div>
+      {{ form.hidden_tag() }}
+
+      <div class="mb-3">
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control animated-input", type="email", placeholder="Enter your email address") }}
+        {% for error in form.email.errors %}
+          <div class="alert alert-danger mt-1 py-1 px-2" role="alert">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.password.label(class="form-label") }}
+        {{ form.password(class="form-control animated-input", type="password", placeholder="Enter the password") }}
+        {% for error in form.password.errors %}
+          <div class="alert alert-danger mt-1 py-1 px-2" role="alert">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="form-check mb-3">
+        {{ form.remember_me(class="form-check-input") }}
+        {{ form.remember_me.label(class="form-check-label") }}
+      </div>
+
+      <div class="d-grid">
+        {{ form.submit(class="btn animated-btn") }}
+      </div>
+
+      {% if message %}
+        <div class="alert alert-warning mt-3">{{ message }}</div>
+      {% endif %}
     </form>
-{% endblock %}
+  </div>
+</div>
+
+<footer class="bg-dark text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5>CoolLiveKlima</h5>
+                <p>Professional air conditioning installation and service since 2010.</p>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/install" class="text-white">Installation</a></li>
+                    <li><a href="/about_us" class="text-white">About Us</a></li>
+                    <li><a href="#" class="text-white">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-telephone me-2"></i> +7 (495) 123-4567</li>
+                    <li><i class="bi bi-envelope me-2"></i> info@coolliveklima.ru</li>
+                    <li><i class="bi bi-geo-alt me-2"></i> Moscow, Russia</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 CoolLiveKlima. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({ duration: 700, once: true });</script>
+
+</body>
+</html>
