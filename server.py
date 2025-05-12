@@ -25,10 +25,7 @@ app.config['MAX_CONTENT_LENGTH'] = 4 * 1024 * 1024
 app.config['PER_PAGE'] = 5
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# для списка объектов
 api.add_resource(orders_resources.OrdersListResource, '/api/orders')
-
-# для одного объекта
 api.add_resource(orders_resources.OrderResource, '/api/order/<int:order_id>')
 
 UPLOAD_FOLDER = 'uploads'
@@ -125,20 +122,18 @@ def installation_request():
     form = RegisterOrder()
 
     if request.method == 'POST':
-        print("Форма получена! Данные:", request.form)  # Логирование
-        print("Файлы:", request.files)  # Логирование файлов
+        print("Форма получена! Данные:", request.form)
+        print("Файлы:", request.files)
         image = None
 
         if not form.validate():
-            print("Ошибки валидации:", form.errors)  # Вывод ошибок
+            print("Ошибки валидации:", form.errors)
             return render_template('order.html', title='Installation', form=form, yandex_maps_api_key='5ea5f410-6745-408e-be04-5ccd1a9bca7e')
 
         try:
             db_sess = db_session.create_session()
-            # Обработка данных
             print("Данные формы:", form.data)
 
-            # Пример сохранения файла
             if form.photo.data:
                 image = image_to_bytes(form.photo.data)
 
@@ -159,7 +154,7 @@ def installation_request():
             return render_template('index.html')
 
         except Exception as e:
-            print("Ошибка обработки:", str(e))  # Логирование ошибок
+            print("Ошибка обработки:", str(e))
             flash('Ошибка обработки данных', 'error')
 
     return render_template('order.html', title='Installation', form=form, yandex_maps_api_key='5ea5f410-6745-408e-be04-5ccd1a9bca7e')
@@ -189,13 +184,9 @@ def load_prices():
         if not os.path.exists(PRICES_FILE):
             return DEFAULT_PRICES
 
-        # Читаем Excel файл с двумя колонками
         prices_df = pd.read_excel(PRICES_FILE, engine='openpyxl')
-
-        # Преобразуем DataFrame в словарь
         prices_dict = prices_df.set_index('Название')['Цена'].to_dict()
 
-        # Возвращаем цены, подставляя значения по умолчанию при отсутствии
         return {
             'route_price': float(prices_dict.get('route_price', DEFAULT_PRICES['route_price'])),
             'groove_price': float(prices_dict.get('groove_price', DEFAULT_PRICES['groove_price'])),
@@ -214,7 +205,6 @@ def load_prices():
 def calculator():
     prices_data = load_prices()
 
-    # Подготовка prices для шаблона
     prices = {
         'route': prices_data['route_price'],
         'groove': prices_data['groove_price'],
@@ -229,7 +219,6 @@ def calculator():
 
     if request.method == 'POST':
         try:
-            # Получаем данные из формы
             route_length = float(request.form.get('route_length', 0))
             groove_length = float(request.form.get('groove_length', 0))
             ac_count = int(request.form.get('ac_count', 1))
@@ -237,14 +226,12 @@ def calculator():
             extra_mounting = 'extra_mounting' in request.form
             warranty = 'warranty' in request.form
 
-            # Проверка данных
             if route_length < 0 or groove_length < 0 or ac_count < 1:
                 raise ValueError("Некорректные значения")
 
             if ac_type not in prices['ac']:
                 raise ValueError("Неизвестный тип кондиционера")
 
-            # Расчет стоимости
             base_ac_cost = prices['ac'][ac_type] * ac_count
             route_cost = prices['route'] * route_length
             groove_cost = prices['groove'] * groove_length
@@ -272,7 +259,6 @@ def calculator():
             flash(str(e), 'error')
             return render_template('calculator.html', prices=prices)
 
-    # GET запрос
     return render_template('calculator.html', prices=prices)
 
 
