@@ -9,59 +9,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
-<style>
-  :root {
-    --primary-color: #A498DE;
-    --accent-color: #5D8BF4;
-  }
-
-  .text-primary {
-    color: var(--primary-color) !important;
-  }
-
-  .bg-accent {
-    background-color: var(--accent-color) !important;
-    color: white;
-  }
-
-  .btn-accent {
-    background-color: var(--accent-color) !important;
-    border-color: var(--accent-color) !important;
-    color: white;
-  }
-
-  .btn-accent:hover {
-    background-color: #4A78DA !important;
-    border-color: #4A78DA !important;
-  }
-
-  .alert-primary {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-    color: white;
-  }
-
-  .badge.bg-secondary {
-    background-color: var(--primary-color) !important;
-  }
-
-  .form-check-label .badge {
-    font-size: 0.85em;
-  }
-
-  .lang-switcher {
-    margin-right: 15px;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .lang-switcher:hover {
-    background-color: #f8f9fa;
-  }
-</style>
 </head>
 <body>
 
@@ -93,10 +40,10 @@
             <a class="navbar-brand logout" href="/user_account">{{ current_user.name }}</a>
           {% else %}
             <form action="/login" method="get">
-              <button type="submit" class="btn btn-primary entrance" data-i18n="login">Log in</button>
+              <button type="submit" class="btn btn-primary entrance btn-new" data-i18n="login">Log in</button>
             </form>
             <form action="/register" method="get">
-              <button type="submit" class="btn btn-primary sign_up" data-i18n="sign_up">Sign up</button>
+              <button type="submit" class="btn btn-primary sign_up btn-new" data-i18n="sign_up">Sign up</button>
             </form>
           {% endif %}
         </div>
@@ -158,11 +105,6 @@
           </div>
         </div>
 
-        <div class="text-center">
-          <button type="submit" class="btn btn-lg btn-accent px-5 mt-3 shadow-sm" data-i18n="calculate">
-            <i class="bi bi-calculator-fill me-2"></i>Calculate
-          </button>
-        </div>
       </form>
     </div>
   </div>
@@ -172,16 +114,14 @@
       <h3 class="card-title text-center text-primary mb-4" data-i18n="total_cost">Total Cost</h3>
       <div class="row">
         <div class="col-md-6">
-          <p><strong data-i18n="base_cost">Base cost:</strong> <span id="baseCost">0</span> RUB</p>
-          <p><strong data-i18n="line_cost">Line cost:</strong> <span id="routeCost">0</span> RUB</p>
-          <p><strong data-i18n="groove_cost">Groove cost:</strong> <span id="grooveCost">0</span> RUB</p>
+          <p><strong data-i18n="base_cost">Base cost:</strong> <span id="baseCost">0</span></p>
+          <p><strong data-i18n="line_cost">Line cost:</strong> <span id="routeCost">0</span></p>
+          <p><strong data-i18n="groove_cost">Groove cost:</strong> <span id="grooveCost">0</span></p>
         </div>
         <div class="col-md-6">
-          <p><strong data-i18n="additional_work">Additional work:</strong> <span id="extraCost">0</span> RUB</p>
+          <p><strong data-i18n="additional_work">Additional work:</strong> <span id="extraCost">0</span></p>
           <p><strong data-i18n="ac_units">Number of AC units:</strong> <span id="countDisplay">1</span></p>
-          <div class="alert alert-primary mt-3">
-            <h4 class="mb-0"><strong data-i18n="total">Total:</strong> <span id="totalCost">0</span> RUB</h4>
-          </div>
+            <h4 class="mb-0 text-dark"><strong data-i18n="total">Total:</strong> <span id="totalCost">0</span></h4>
         </div>
       </div>
     </div>
@@ -263,8 +203,10 @@
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (translations[currentLang][key]) {
-        if (el.tagName === 'INPUT' || el.tagName === 'OPTION') {
-          el.value = translations[currentLang][key];
+        if (el.tagName === 'INPUT') {
+          el.placeholder = translations[currentLang][key];
+        } else if (el.tagName === 'OPTION') {
+          el.textContent = translations[currentLang][key];
         } else {
           el.textContent = translations[currentLang][key];
         }
@@ -273,6 +215,9 @@
 
     // Store preference in localStorage
     localStorage.setItem('preferredLang', currentLang);
+
+    // Recalculate after language change
+    calculate();
   }
 
   // Initialize language
@@ -286,6 +231,9 @@
     }
 
     document.getElementById('langSwitcher').addEventListener('click', switchLanguage);
+
+    // Calculate on page load
+    calculate();
   });
 
   const prices = {
@@ -299,8 +247,6 @@
     extra_mounting: {{ prices.extra_mounting }},
     warranty: {{ prices.warranty }}
   };
-
-  const formatCurrency = val => Number(val).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   function calculate() {
     const routeLength = parseFloat(document.getElementById('route_length').value) || 0;
@@ -317,16 +263,26 @@
     let subtotal = baseCost + routeCost + grooveCost;
     let extraCost = 0;
 
-    if (extra) extraCost += subtotal * prices.extra_mounting;
-    if (warranty) extraCost += subtotal * prices.warranty;
+    if (extra) extraCost += subtotal * prices.extra_mounting / 100;
+    if (warranty) extraCost += subtotal * prices.warranty / 100;
 
     const total = subtotal + extraCost;
 
-    document.getElementById('baseCost').textContent = formatCurrency(baseCost);
-    document.getElementById('routeCost').textContent = formatCurrency(routeCost);
-    document.getElementById('grooveCost').textContent = formatCurrency(grooveCost);
-    document.getElementById('extraCost').textContent = formatCurrency(extraCost);
-    document.getElementById('totalCost').textContent = formatCurrency(total);
+    // Format numbers based on current language
+    const formatOptions = {
+      style: 'currency',
+      currency: 'RUB',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    };
+
+    const locale = currentLang === 'ru' ? 'ru-RU' : 'en-US';
+
+    document.getElementById('baseCost').textContent = baseCost.toLocaleString(locale, formatOptions);
+    document.getElementById('routeCost').textContent = routeCost.toLocaleString(locale, formatOptions);
+    document.getElementById('grooveCost').textContent = grooveCost.toLocaleString(locale, formatOptions);
+    document.getElementById('extraCost').textContent = extraCost.toLocaleString(locale, formatOptions);
+    document.getElementById('totalCost').textContent = total.toLocaleString(locale, formatOptions);
     document.getElementById('countDisplay').textContent = acCount;
     document.getElementById('resultBlock').classList.remove('d-none');
   }
@@ -334,6 +290,5 @@
   const inputs = document.querySelectorAll('#calcForm input, #calcForm select');
   inputs.forEach(el => el.addEventListener('input', calculate));
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

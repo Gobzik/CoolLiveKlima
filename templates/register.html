@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Air Conditioner Installation Request</title>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey={{ yandex_maps_api_key }}&lang=en_US" type="text/javascript"></script>
-    <!-- Bootstrap и AOS -->
+  <meta charset="utf-8">
+  <title>Registration | CoolLiveKlima</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
+  <script src="https://api-maps.yandex.ru/2.1/?apikey={{ yandex_maps_api_key }}&lang=en_US" type="text/javascript"></script>
 </head>
 <body>
 
@@ -27,21 +27,26 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/install">Installation</a>
+            <a class="nav-link" href="/install">Installation</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/about_us">About us</a>
           </li>
         </ul>
+          <div class="d-flex align-items-center">
+                    <div class="lang-switcher" id="langSwitcher">
+                        <span class="lang-flag">🇬🇧</span> <span class="lang-text">EN</span>
+                    </div>
+          </div>
         <div class="d-flex">
           {% if current_user.is_authenticated %}
             <a class="navbar-brand logout" href="/user_account">{{ current_user.name }}</a>
           {% else %}
             <form action="/login" method="get">
-              <button type="submit" class="btn btn-primary entrance">Log in</button>
+              <button type="submit" class="btn btn-primary entrance btn-new">Log in</button>
             </form>
             <form action="/register" method="get">
-              <button type="submit" class="btn btn-primary sign_up">Sign up</button>
+              <button type="submit" class="btn btn-primary sign_up btn-new">Sign up</button>
             </form>
           {% endif %}
         </div>
@@ -50,290 +55,231 @@
   </nav>
 </header>
 
-<div class="container mt-5">
+<!-- Registration Section -->
+<section class="registration-section py-5" data-aos="fade-up">
+  <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="form-container animate__animated animate__fadeIn">
-                <h1 class="text-center mb-4">Registration</h1>
-                <form action="" method="post" enctype="multipart/form-data" class="animate__animated animate__fadeInUp animate__delay-1s">
-                    {{ form.hidden_tag() }}
+      <div class="col-lg-8">
+        <div class="registration-card p-4 p-md-5">
+          <h1 class="text-center mb-4">Registration</h1>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                {{ form.name.label(class="form-label") }}
-                                {{ form.name(class="form-control") }}
-                                {% for error in form.name.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                {{ form.surname.label(class="form-label") }}
-                                {{ form.surname(class="form-control") }}
-                                {% for error in form.surname.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
+          <form action="" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
 
-                    <div class="form-group mb-4">
-                        {{ form.address.label(class="form-label") }}
-                        {{ form.address(class="form-control", id="address") }}
-                        <div id="map" class="mt-3 rounded-3" style="height: 300px; width: 100%;"></div>
-                        {% for error in form.address.errors %}
-                            <div class="invalid-feedback d-block">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <div class="form-group mb-4">
-                        {{ form.phone_number.label(class="form-label") }}
-                        {{ form.phone_number(class="form-control") }}
-                        {% for error in form.phone_number.errors %}
-                            <div class="invalid-feedback d-block">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <div class="form-group mb-4">
-                        {{ form.email.label(class="form-label") }}
-                        {{ form.email(class="form-control", type="email") }}
-                        {% for error in form.email.errors %}
-                            <div class="invalid-feedback d-block">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                {{ form.password.label(class="form-label") }}
-                                {{ form.password(class="form-control", type="password") }}
-                                {% for error in form.password.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                {{ form.password_again.label(class="form-label") }}
-                                {{ form.password_again(class="form-control", type="password") }}
-                                {% for error in form.password_again.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group text-center mt-4">
-                        {{ form.submit(type="submit", class="btn btn-primary btn-lg px-5 animate__animated animate__pulse animate__infinite") }}
-                    </div>
-
-                    {% if message %}
-                    <div class="alert alert-info mt-4">{{ message }}</div>
-                    {% endif %}
-                </form>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-group">
+                  {{ form.name.label(class="form-label") }}
+                  {{ form.name(class="form-control") }}
+                  {% for error in form.name.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-group">
+                  {{ form.surname.label(class="form-label") }}
+                  {{ form.surname(class="form-control") }}
+                  {% for error in form.surname.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              </div>
             </div>
+
+            <div class="form-group mb-4">
+              {{ form.address.label(class="form-label") }}
+              {{ form.address(class="form-control", id="address") }}
+              <div id="map" class="mt-3 rounded-3" style="height: 300px; width: 100%;"></div>
+              {% for error in form.address.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="form-group mb-4">
+              {{ form.phone_number.label(class="form-label") }}
+              {{ form.phone_number(class="form-control") }}
+              {% for error in form.phone_number.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="form-group mb-4">
+              {{ form.email.label(class="form-label") }}
+              {{ form.email(class="form-control", type="email") }}
+              {% for error in form.email.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-group">
+                  {{ form.password.label(class="form-label") }}
+                  {{ form.password(class="form-control", type="password") }}
+                  {% for error in form.password.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-group">
+                  {{ form.password_again.label(class="form-label") }}
+                  {{ form.password_again(class="form-control", type="password") }}
+                  {% for error in form.password_again.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group text-center mt-4">
+              {{ form.submit(type="submit", class="btn btn-primary btn-lg px-5 submit-btn") }}
+            </div>
+
+            {% if message %}
+            <div class="alert alert-info mt-4">{{ message }}</div>
+            {% endif %}
+          </form>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+</section>
+
 <footer class="bg-dark text-white py-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-4 mb-md-0">
-                <h5>CoolLiveKlima</h5>
-                <p>Professional air conditioning installation and service since 2010.</p>
-            </div>
-            <div class="col-md-4 mb-4 mb-md-0">
-                <h5>Quick Links</h5>
-                <ul class="list-unstyled">
-                    <li><a href="/install" class="text-white">Installation</a></li>
-                    <li><a href="/about_us" class="text-white">About Us</a></li>
-                    <li><a href="#" class="text-white">Reviews</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5>Contact Us</h5>
-                <ul class="list-unstyled">
-                    <li><i class="bi bi-telephone me-2"></i> +7 (495) 123-4567</li>
-                    <li><i class="bi bi-envelope me-2"></i> info@coolliveklima.ru</li>
-                    <li><i class="bi bi-geo-alt me-2"></i> Moscow, Russia</li>
-                </ul>
-            </div>
-        </div>
-        <hr class="my-4">
-        <div class="text-center">
-            <p class="mb-0">&copy; 2025 CoolLiveKlima. All rights reserved.</p>
-        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4 mb-md-0">
+        <h5>CoolLiveKlima</h5>
+        <p>Professional air conditioning installation and service since 2010.</p>
+      </div>
+      <div class="col-md-4 mb-4 mb-md-0">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="/install" class="text-white">Installation</a></li>
+          <li><a href="/about_us" class="text-white">About Us</a></li>
+          <li><a href="#" class="text-white">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Contact Us</h5>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-telephone me-2"></i> +7 (495) 123-4567</li>
+          <li><i class="bi bi-envelope me-2"></i> info@coolliveklima.ru</li>
+          <li><i class="bi bi-geo-alt me-2"></i> Moscow, Russia</li>
+        </ul>
+      </div>
     </div>
+    <hr class="my-4">
+    <div class="text-center">
+      <p class="mb-0">&copy; 2025 CoolLiveKlima. All rights reserved.</p>
+    </div>
+  </div>
 </footer>
-</body>
 
-<script src="https://api-maps.yandex.ru/2.1/?apikey={{ yandex_maps_api_key }}&lang=en_US" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({ duration: 700, once: true });</script>
+
 <script>
-    // Initialize Yandex Map
-    ymaps.ready(init);
+  // Initialize Yandex Map
+  ymaps.ready(init);
 
-    function init() {
-        const map = new ymaps.Map("map", {
-            center: [55.751574, 37.573856], // Moscow coordinates (default)
-            zoom: 10
+  function init() {
+    const map = new ymaps.Map("map", {
+      center: [55.751574, 37.573856], // Moscow coordinates (default)
+      zoom: 10
+    });
+
+    const searchControl = new ymaps.control.SearchControl({
+      options: {
+        provider: 'yandex#search',
+        noPlacemark: true
+      }
+    });
+
+    map.controls.add(searchControl);
+
+    let placemark;
+
+    // Handle search result
+    searchControl.events.add('resultselect', function(e) {
+      const results = searchControl.getResultsArray();
+      const selected = e.get('index');
+      const point = results[selected].geometry.getCoordinates();
+
+      // Update address field
+      document.getElementById('address').value = results[selected].getAddressLine();
+
+      // Remove previous placemark if exists
+      if (placemark) {
+        map.geoObjects.remove(placemark);
+      }
+
+      // Add new placemark
+      placemark = new ymaps.Placemark(point, {}, {
+        preset: 'islands#blueDotIcon'
+      });
+
+      map.geoObjects.add(placemark);
+      map.setCenter(point, 16);
+    });
+
+    // Handle click on map
+    map.events.add('click', function(e) {
+      const coords = e.get('coords');
+
+      // Get address by coordinates
+      ymaps.geocode(coords).then(function(res) {
+        const firstGeoObject = res.geoObjects.get(0);
+        const address = firstGeoObject.getAddressLine();
+
+        // Update address field
+        document.getElementById('address').value = address;
+
+        // Remove previous placemark if exists
+        if (placemark) {
+          map.geoObjects.remove(placemark);
+        }
+
+        // Add new placemark
+        placemark = new ymaps.Placemark(coords, {}, {
+          preset: 'islands#blueDotIcon'
         });
 
-        const searchControl = new ymaps.control.SearchControl({
-            options: {
-                provider: 'yandex#search',
-                noPlacemark: true
-            }
-        });
+        map.geoObjects.add(placemark);
+      });
+    });
 
-        map.controls.add(searchControl);
-
-        let placemark;
-
-        // Handle search result
-        searchControl.events.add('resultselect', function(e) {
-            const results = searchControl.getResultsArray();
-            const selected = e.get('index');
-            const point = results[selected].geometry.getCoordinates();
-
-            // Update address field
-            document.getElementById('address').value = results[selected].getAddressLine();
+    // Handle manual address input
+    document.getElementById('address').addEventListener('change', function() {
+      const address = this.value.trim();
+      if (address.length > 5) {
+        ymaps.geocode(address).then(function(res) {
+          const firstGeoObject = res.geoObjects.get(0);
+          if (firstGeoObject) {
+            const point = firstGeoObject.geometry.getCoordinates();
 
             // Remove previous placemark if exists
             if (placemark) {
-                map.geoObjects.remove(placemark);
+              map.geoObjects.remove(placemark);
             }
 
             // Add new placemark
             placemark = new ymaps.Placemark(point, {}, {
-                preset: 'islands#blueDotIcon'
+              preset: 'islands#blueDotIcon'
             });
 
             map.geoObjects.add(placemark);
             map.setCenter(point, 16);
+          }
         });
-
-        // Handle click on map
-        map.events.add('click', function(e) {
-            const coords = e.get('coords');
-
-            // Get address by coordinates
-            ymaps.geocode(coords).then(function(res) {
-                const firstGeoObject = res.geoObjects.get(0);
-                const address = firstGeoObject.getAddressLine();
-
-                // Update address field
-                document.getElementById('address').value = address;
-
-                // Remove previous placemark if exists
-                if (placemark) {
-                    map.geoObjects.remove(placemark);
-                }
-
-                // Add new placemark
-                placemark = new ymaps.Placemark(coords, {}, {
-                    preset: 'islands#blueDotIcon'
-                });
-
-                map.geoObjects.add(placemark);
-            });
-        });
-
-        // Handle manual address input
-        document.getElementById('address').addEventListener('change', function() {
-            const address = this.value.trim();
-            if (address.length > 5) {
-                ymaps.geocode(address).then(function(res) {
-                    const firstGeoObject = res.geoObjects.get(0);
-                    if (firstGeoObject) {
-                        const point = firstGeoObject.geometry.getCoordinates();
-
-                        // Remove previous placemark if exists
-                        if (placemark) {
-                            map.geoObjects.remove(placemark);
-                        }
-
-                        // Add new placemark
-                        placemark = new ymaps.Placemark(point, {}, {
-                            preset: 'islands#blueDotIcon'
-                        });
-
-                        map.geoObjects.add(placemark);
-                        map.setCenter(point, 16);
-                    }
-                });
-            }
-        });
-    }
+      }
+    });
+  }
 </script>
 
-<style>
-    :root {
-        --primary: #A498DE;
-        --light-blue: #e7f1ff;
-        --mid-blue: #c3dafe;
-        --gray: #6c757d;
-        --light-gray: #f8f9fa;
-        --dark-gray: #343a40;
-    }
-
-    body {
-        background-color: var(--light-blue);
-    }
-
-    .form-container {
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-    }
-
-    .form-container:hover {
-        transform: scale(1.01);
-    }
-
-    h1 {
-        color: var(--primary);
-        font-weight: 700;
-    }
-
-    .form-label {
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: var(--gray);
-    }
-
-    .form-control {
-        padding: 12px 15px;
-        border-radius: 12px;
-        border: 1px solid #ccc;
-        transition: all 0.3s ease;
-    }
-
-    .form-control:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 0.25rem rgba(164, 152, 222, 0.25);
-    }
-
-
-
-    .btn-primary:hover {
-        background-color: #8B7EC8;
-        transform: translateY(-2px);
-    }
-
-    .invalid-feedback {
-        color: #dc3545;
-        font-size: 14px;
-        margin-top: 5px;
-    }
-
-    @media (max-width: 768px) {
-        .form-container {
-            padding: 25px;
-        }
-    }
-</style>
+</body>
+</html>

@@ -55,18 +55,46 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <i class="fas fa-tools me-2"></i>Админ-панель
-        </a>
-        <div class="d-flex align-items-center">
-            <div class="lang-switcher" id="langSwitcher">
-                <span class="lang-flag">🇷🇺</span> <span class="lang-text">RU</span>
-            </div>
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" height="40">
+        <span class="logo-text">CoolLiveKlima</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="/install">Installation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about_us">About us</a>
+          </li>
+        </ul>
+          <div class="d-flex align-items-center">
+                    <div class="lang-switcher" id="langSwitcher">
+                        <span class="lang-flag">🇬🇧</span> <span class="lang-text">EN</span>
+                    </div>
+          </div>
+        <div class="d-flex">
+          {% if current_user.is_authenticated %}
+            <a class="navbar-brand logout" href="/user_account">{{ current_user.name }}</a>
+          {% else %}
+            <form action="/login" method="get">
+              <button type="submit" class="btn btn-primary entrance btn-new">Log in</button>
+            </form>
+            <form action="/register" method="get">
+              <button type="submit" class="btn btn-primary sign_up btn-new">Sign up</button>
+            </form>
+          {% endif %}
         </div>
+      </div>
     </div>
-</nav>
+  </nav>
+</header>
 
 <div class="container mt-4 mb-5">
     {% if current_user.id in [1, 2] %}

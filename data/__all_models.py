@@ -1,2 +1,2 @@
-from . import users
-from . import orders
+from data import users
+from data import orders

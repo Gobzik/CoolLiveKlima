@@ -1,156 +1,232 @@
-/* Кастомный цвет для логотипа */
-.logo-text {
-  color: #A498DE !important ; /* Пример: зелено-бирюзовый */
-  font-weight: 500;
-  margin-left: 0px;
+:root {
+  --primary: #A498DE;
+  --secondary: #6c757d;
+  --accent: #5D8BF4;
+  --light-gray: #f8f9fa;
+  --dark-gray: #343a40;
 }
 
-.about_us {
-  margin-left: 1200px;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  background-color: #f8f9fa;
 }
 
-.entrance {
-  border-radius: 21px;
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent-color) !important;
   color: white;
-  transition: .2s linear;
-  background: #A498DE;
-  border-color: #A498DE;
-  margin-left: 20px;
 }
 
-.install{
-  border-radius: 21px;
+.btn-accent {
+  background-color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
   color: white;
-  transition: .2s linear;
-  background: #A498DE;
-  border-color: #A498DE;
-  margin-left: 50%;
-  text-align:center;
-  width: 200px;
-  transform: translate(-50%, 0);
 }
 
-.sign_up {
-  border-radius: 21px;
-  color: black;
-  transition: .2s linear;
-  background: #D9D9D9;
-  border-color: #D9D9D9;
+.btn-accent:hover {
+  background-color: #4A78DA !important;
+  border-color: #4A78DA !important;
+}
+
+.alert-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+
+.badge.bg-secondary {
+  background-color: var(--primary-color) !important;
+}
+
+.form-check-label .badge {
+  font-size: 0.85em;
+}
+
+.lang-switcher {
+  margin-right: 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lang-switcher:hover {
+  background-color: #f8f9fa;
+}
+
+.navbar-brand .logo-text {
+  font-weight: bold;
   margin-left: 10px;
 }
 
-.logout {
-  margin-left: 25px
+.card {
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.get_your_new {
-  text-align: center;
-  text-vertical-align: 300px;
-  margin-top: 200px;
+.shadow-lg {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-.cond_sys {
-  text-align: center;
-  color: #6CC3F9;
+.form-control, .form-select {
+  padding: 10px 15px;
+  border-radius: 8px;
 }
 
-.carousel-img {
-  border-radius: 21px;
-  object-fit: cover;
-  height: 300px;
+.btn-lg {
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 600;
 }
 
-.row-angle {
-  display: flex;
-  justify-content: center; /* Перекрытие рядов */
+#resultBlock {
+  transition: all 0.5s ease;
 }
-
-.carousel-angle {
-  margin: 15px;
-  width: 100px;
-}
-
-/* Центральная (нижняя) карусель */
-#carousel4, #carousel1, #carousel7, #carousel3, #carousel5, #carousel2, #carousel6 {
-  width: 230px;
-}
-#carousel4 {
-            align: center
-        }
-
-#carousel3 {
-            left: calc(50% - 675px);
-        }
-
-#carousel2 {
-            left: calc(50% - 950px);
-        }
-
-#carousel1 {
-            left: calc(50% - 1220px);
-        }
-
-#carousel5 {
-            left: calc(50% + -400px);
-
-        }
-
-#carousel6 {
-            left: calc(50% + -130px);
-        }
-
-#carousel7 {
-            left: calc(50% + 150px);
-        }
 
 @media (max-width: 768px) {
-            .carousel-wrapper {
-                min-height: 1200px;
-            }
-            .carousel-item {
-                position: static !important;
-                width: 90% !important;
-                margin: 10px auto !important;
-                transform: none !important;
-            }
+  .navbar-nav {
+    margin-top: 15px;
+  }
 
-.page {
-  height: 100vh; /* Каждая "страница" - ровно один экран */
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
-  color: white;
+  .lang-switcher {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
 }
 
-#page1 { background-color: #3498db; }
-#page2 { background-color: #2ecc71; }
-#page3 { background-color: #e74c3c; }
-#page4 { background-color: #f39c12; }
+.hero-section {
+      background: url('{{ url_for("static", filename="images/aircool-bg.png") }}') no-repeat center center/cover;
+      color: white;
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
 
-.scroll-down-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background-color: rgba(0, 0, 0, 0.7);
+.hero-section::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+.hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+.features-section {
+      padding: 60px 0;
+    }
+
+.feature-card {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      padding: 30px;
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+
+.feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+.cta-section {
+      background-color: #e9f5ff;
+      padding: 80px 0;
+      text-align: center;
+    }
+
+.cta-buttons {
+      margin-top: 30px;
+    }
+
+.cta-buttons .btn {
+      margin: 0 10px;
+      padding: 12px 30px;
+      font-weight: 600;
+    }
+
+/* Герой-секция */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 50px;
+}
+
+.btn-new {
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #003CC5 0%, #0B63F6 51%, #003CC5 100%);
+    margin-left: 10px;
+}
+
+.btn-new:hover {
+     background-position: right center;
+}
+
+.registration-section {
+    background-color: #f8f9fa;
+  }
+
+  .registration-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .registration-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: #495057;
+  }
+
+  .form-control {
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #A498DE;
+    box-shadow: 0 0 0 0.25rem rgba(164, 152, 222, 0.25);
+  }
+
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875em;
+  }
+
+  #map {
+    border: 1px solid #dee2e6;
+  }
+
+.submit-btn {
+            background-color: var(--primary);
             color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-.scroll-down-bar:hover {
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-
-.scroll-down-bar::after {
-            content: "↓";
-            font-size: 24px;
-            margin-left: 10px;
+            width: 100%;
+            transition: all 0.3s;
         }

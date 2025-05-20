@@ -9,7 +9,7 @@ def abort_if_news_not_found(news_id):
     session = db_session.create_session()
     order = session.query(Order).get(news_id)
     if not order:
-        abort(404, message=f"News {news_id} not found")
+        abort(404, message=f'News {news_id} not found')
 
 
 parser = reqparse.RequestParser()

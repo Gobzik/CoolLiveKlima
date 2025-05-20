@@ -1,478 +1,217 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>{{title}}</title>
-    <style>
-        :root {
-            --primary: #A498DE; /* Основной фиолетовый */
-            --secondary: #6c757d; /* Серый */
-            --accent: #5D8BF4; /* Голубой */
-            --light-gray: #f8f9fa;
-            --dark-gray: #343a40;
-        }
+  <meta charset="utf-8">
+  <title>About Us | CoolLiveKlima</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        .hero-section {
-            background: linear-gradient(135deg, rgba(93,139,244,0.9) 0%, rgba(164,152,222,0.9) 100%),
-                        url('https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-        }
+  <!-- CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
-        .icon-box {
-            transition: all 0.4s ease;
-            border: 2px solid transparent;
-        }
-
-        .icon-box:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .progress-bar {
-            transition: width 2s ease-in-out;
-        }
-
-        .fade-in-section {
-            opacity: 0;
-            transition: opacity 1.2s ease, transform 1.2s ease;
-            transform: translateY(20px);
-        }
-
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Navbar adjustments */
-        .navbar-brand img {
-            height: 40px;
-            margin-right: 10px;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .logo-text {
-            color: var(--primary) !important;
-            font-weight: 500;
-            margin-left: 0px;
-        }
-
-        .about_us {
-            margin-right: 1200px;
-        }
-
-        .entrance {
-            border-radius: 21px;
-            color: white;
-            transition: .2s linear;
-            background: var(--primary);
-            border-color: var(--primary);
-            margin-right: 20px;
-        }
-
-        .sign_up {
-            border-radius: 21px;
-            color: var(--dark-gray);
-            transition: .2s linear;
-            background: var(--light-gray);
-            border-color: var(--light-gray);
-            margin-right: 10px;
-        }
-
-        .logout {
-            margin-right: 25px
-        }
-
-        /* Обновленные цвета для секций */
-        .bg-primary {
-            background-color: var(--primary) !important;
-        }
-
-        .bg-light {
-            background-color: var(--light-gray) !important;
-        }
-
-        .text-primary {
-            color: var(--primary) !important;
-        }
-
-        .text-accent {
-            color: var(--accent) !important;
-        }
-
-        .bg-accent {
-            background-color: var(--accent) !important;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .btn-outline-primary {
-            color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        /* Прогресс бары */
-        .progress-bar.bg-primary {
-            background-color: var(--primary) !important;
-        }
-
-        .progress-bar.bg-success {
-            background-color: var(--accent) !important;
-        }
-
-        .progress-bar.bg-warning {
-            background-color: var(--secondary) !important;
-        }
-
-        .progress-bar.bg-danger {
-            background-color: #8B9EE3 !important; /* Дополнительный голубой */
-        }
-
-        /* Герой секция */
-        .hero-section h1 span {
-            color: var(--primary) !important;
-        }
-
-        .hero-section .btn-warning {
-            background-color: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-    </style>
 </head>
 <body>
+
+<!-- Header -->
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- Logo/Brand -->
-            <a class="navbar-brand" href="/">
-                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
-                <span class="logo-text">CoolLiveKlima</span>
-            </a>
-
-            <!-- Main Menu -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/install">Installation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/about_us">About us</a>
-                    </li>
-                </ul>
-
-                <!-- Auth Buttons -->
-                <div class="d-flex">
-                    {% if current_user.is_authenticated %}
-                        <a class="navbar-brand logout" href="/user_account">{{ current_user.name }}</a>
-                    {% else %}
-                        <form action="/login" method="get">
-                            <button type="submit" class="btn btn-primary entrance">Log in</button>
-                        </form>
-                        <form action="/register" method="get">
-                            <button type="submit" class="btn btn-primary sign_up">Sign up</button>
-                        </form>
-                    {% endif %}
-                </div>
-            </div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" height="40">
+        <span class="logo-text">CoolLiveKlima</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/install">Installation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/about_us">About us</a>
+          </li>
+        </ul>
+          <div class="d-flex align-items-center">
+                    <div class="lang-switcher" id="langSwitcher">
+                        <span class="lang-flag">🇬🇧</span> <span class="lang-text">EN</span>
+                    </div>
+          </div>
+        <div class="d-flex">
+          {% if current_user.is_authenticated %}
+            <a class="navbar-brand logout" href="/user_account">{{ current_user.name }}</a>
+          {% else %}
+            <form action="/login" method="get">
+              <button type="submit" class="btn btn-primary entrance btn-new">Log in</button>
+            </form>
+            <form action="/register" method="get">
+              <button type="submit" class="btn btn-primary sign_up btn-new">Sign up</button>
+            </form>
+          {% endif %}
         </div>
-    </nav>
+      </div>
+    </div>
+  </nav>
 </header>
 
-<main>
-    <!-- Hero Section -->
-    <section class="hero-section text-white py-5">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-6 animate__animated animate__fadeInLeft">
-                    <h1 class="display-3 fw-bold mb-4">About <span class="text-primary">CoolLiveKlima</span></h1>
-                    <p class="lead mb-4">Professional air conditioning installation in Moscow and region since 2010</p>
-                    <a href="/install" class="btn btn-primary btn-lg px-4 py-2 rounded-pill animate__animated animate__pulse animate__infinite">Free consultation</a>
-                </div>
-                <div class="col-lg-6 text-center floating animate__animated animate__fadeIn">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3058/3058971.png" alt="Air Conditioner" class="img-fluid" style="max-height: 300px;">
-                </div>
-            </div>
+<!-- About Hero Section -->
+<section class="about-hero-section">
+  <div class="container hero-content" data-aos="fade-up">
+    <h1 class="display-4 fw-bold">About CoolLiveKlima</h1>
+    <p class="lead mt-3">Delivering comfort and quality since 2010</p>
+  </div>
+</section>
+
+<!-- Our Story Section -->
+<section id="our-story" class="py-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6" data-aos="fade-right">
+        <h2 class="mb-4">Our Story</h2>
+        <p>Founded in 2010, CoolLiveKlima began as a small team of HVAC enthusiasts with a mission to bring affordable, professional air conditioning services to Moscow homes and businesses.</p>
+        <p>What started as a three-person operation has grown into one of the most trusted names in air conditioning installation and maintenance, serving thousands of satisfied customers across the region.</p>
+        <p>Our commitment to quality workmanship, transparent pricing, and exceptional customer service has been the foundation of our success.</p>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <img src="{{ url_for('static', filename='images/team-working.jpg') }}" alt="Our team at work" class="img-fluid rounded shadow">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Our Team Section -->
+<section id="our-team" class="py-5 bg-white">
+  <div class="container">
+    <h2 class="text-center mb-5" data-aos="fade-down">Meet Our Team</h2>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="team-card text-center h-100">
+          <img src="{{ url_for('static', filename='images/team1.jpg') }}" alt="Team Member" class="img-fluid rounded-circle mb-3">
+          <h5>Alexei Petrov</h5>
+          <p class="text-muted">Founder & Lead Technician</p>
+          <p>With over 20 years in HVAC, Alexei ensures every installation meets our exacting standards.</p>
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="py-5 bg-light">
-        <div class="container py-5">
-            <div class="row fade-in-section">
-                <div class="col-lg-6 mb-4">
-                    <h2 class="fw-bold mb-4">Our Story</h2>
-                    <p class="lead">Founded in 2010, our company started with a small team of climate technology enthusiasts.</p>
-                    <p>Today we are market leaders with more than 5,000 successful installations throughout Moscow and the region. Our secret is simple: quality, reliability and individual approach to each client.</p>
-                    <div class="d-flex align-items-center mt-4">
-                        <div class="me-4">
-                            <h3 class="fw-bold text-primary">5,000+</h3>
-                            <p>Installed systems</p>
-                        </div>
-                        <div class="me-4">
-                            <h3 class="fw-bold text-primary">12 years</h3>
-                            <p>Experience</p>
-                        </div>
-                        <div>
-                            <h3 class="fw-bold text-primary">98%</h3>
-                            <p>Satisfied customers</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                        <div class="card-body p-0">
-                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Our team" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="team-card text-center h-100">
+          <img src="{{ url_for('static', filename='images/team2.jpg') }}" alt="Team Member" class="img-fluid rounded-circle mb-3">
+          <h5>Irina Sokolova</h5>
+          <p class="text-muted">Customer Relations</p>
+          <p>Irina makes sure every client receives personalized attention and support throughout their project.</p>
         </div>
-    </section>
-
-    <!-- Why Us Section -->
-    <section class="py-5">
-        <div class="container py-5">
-            <div class="text-center mb-5 fade-in-section">
-                <h2 class="fw-bold mb-3">Why Choose Us?</h2>
-                <p class="lead text-muted">We make the air conditioning installation process simple and worry-free</p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-3 fade-in-section">
-                    <div class="icon-box p-4 text-center h-100 rounded-4 bg-white shadow-sm">
-                        <div class="icon-wrapper bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 70px; height: 70px;">
-                            <i class="bi bi-award fs-3"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">Certified Specialists</h4>
-                        <p>All our technicians are certified by Daikin, Mitsubishi and undergo annual training</p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3 fade-in-section" style="transition-delay: 0.2s;">
-                    <div class="icon-box p-4 text-center h-100 rounded-4 bg-white shadow-sm">
-                        <div class="icon-wrapper bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 70px; height: 70px;">
-                            <i class="bi bi-currency-dollar fs-3"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">Transparent Pricing</h4>
-                        <p>Fixed cost with no hidden fees. Best price guarantee!</p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3 fade-in-section" style="transition-delay: 0.4s;">
-                    <div class="icon-box p-4 text-center h-100 rounded-4 bg-white shadow-sm">
-                        <div class="icon-wrapper bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 70px; height: 70px;">
-                            <i class="bi bi-shield-check fs-3"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">3-Year Warranty</h4>
-                        <p>The longest warranty on work and equipment on the market</p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3 fade-in-section" style="transition-delay: 0.6s;">
-                    <div class="icon-box p-4 text-center h-100 rounded-4 bg-white shadow-sm">
-                        <div class="icon-wrapper bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 70px; height: 70px;">
-                            <i class="bi bi-lightning-charge fs-3"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">Express Installation</h4>
-                        <p>Installation in 1 day with minimal interference with your repair</p>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="team-card text-center h-100">
+          <img src="{{ url_for('static', filename='images/team3.jpg') }}" alt="Team Member" class="img-fluid rounded-circle mb-3">
+          <h5>Dmitri Volkov</h5>
+          <p class="text-muted">Installation Specialist</p>
+          <p>Dmitri's precision and attention to detail make him one of our most requested technicians.</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Skills Section -->
-    <section class="py-5 bg-light">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 fade-in-section">
-                    <h2 class="fw-bold mb-4">Our Competencies</h2>
-                    <div class="skill-item mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span>Residential AC installation</span>
-                            <span>95%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: 95%"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill-item mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span>VRV system installation</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-accent progress-bar-striped progress-bar-animated" role="progressbar" style="width: 90%"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill-item mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span>Smart climate control systems</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-secondary progress-bar-striped progress-bar-animated" role="progressbar" style="width: 85%"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill-item mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span>Energy efficient solutions</span>
-                            <span>98%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar" role="progressbar" style="width: 98%; background-color: #8B9EE3;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 fade-in-section" style="transition-delay: 0.3s;">
-                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100">
-                        <div class="card-body p-0">
-                            <div class="p-4">
-                                <h3 class="fw-bold mb-3">Our Values</h3>
-                                <div class="d-flex mb-3">
-                                    <div class="me-3 text-primary">
-                                        <i class="bi bi-check-circle-fill fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="fw-bold">Quality</h5>
-                                        <p>We use only professional equipment and premium materials</p>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex mb-3">
-                                    <div class="me-3 text-primary">
-                                        <i class="bi bi-check-circle-fill fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="fw-bold">Honesty</h5>
-                                        <p>No imposed services - only necessary solutions for your comfort</p>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex mb-3">
-                                    <div class="me-3 text-primary">
-                                        <i class="bi bi-check-circle-fill fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="fw-bold">Innovation</h5>
-                                        <p>We implement modern technologies for energy saving and automation</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- Values Section -->
+<section id="values" class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5" data-aos="fade-down">Our Values</h2>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="value-card h-100">
+          <div class="value-icon">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <h5>Quality</h5>
+          <p>We use only premium materials and follow industry best practices for every installation.</p>
         </div>
-    </section>
-
-    <!-- Team Section -->
-    <section class="py-5">
-        <div class="container py-5">
-            <div class="text-center mb-5 fade-in-section">
-                <h2 class="fw-bold mb-3">Our Team</h2>
-                <p class="lead text-muted">Professionals with years of experience in climate technology</p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-3 fade-in-section">
-                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="card-img-top" alt="Sergey Petrov">
-                        <div class="card-body text-center">
-                            <h5 class="fw-bold mb-1">Sergey Petrov</h5>
-                            <p class="text-muted">Technical Director</p>
-                            <div class="d-flex justify-content-center">
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle me-2"><i class="bi bi-linkedin"></i></a>
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle"><i class="bi bi-envelope"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3 fade-in-section" style="transition-delay: 0.2s;">
-                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="card-img-top" alt="Anna Ivanova">
-                        <div class="card-body text-center">
-                            <h5 class="fw-bold mb-1">Anna Ivanova</h5>
-                            <p class="text-muted">Project Manager</p>
-                            <div class="d-flex justify-content-center">
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle me-2"><i class="bi bi-linkedin"></i></a>
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle"><i class="bi bi-envelope"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3 fade-in-section" style="transition-delay: 0.4s;">
-                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-                        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="card-img-top" alt="Dmitry Smirnov">
-                        <div class="card-body text-center">
-                            <h5 class="fw-bold mb-1">Dmitry Smirnov</h5>
-                            <p class="text-muted">Chief Engineer</p>
-                            <div class="d-flex justify-content-center">
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle me-2"><i class="bi bi-linkedin"></i></a>
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle"><i class="bi bi-envelope"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3 fade-in-section" style="transition-delay: 0.6s;">
-                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-                        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="card-img-top" alt="Elena Kuznetsova">
-                        <div class="card-body text-center">
-                            <h5 class="fw-bold mb-1">Elena Kuznetsova</h5>
-                            <p class="text-muted">Service Specialist</p>
-                            <div class="d-flex justify-content-center">
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle me-2"><i class="bi bi-linkedin"></i></a>
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle"><i class="bi bi-envelope"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="value-card h-100">
+          <div class="value-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h5>Customer Focus</h5>
+          <p>Your satisfaction is our top priority. We listen carefully to understand your specific needs.</p>
         </div>
-    </section>
-</main>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="value-card h-100">
+          <div class="value-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h5>Integrity</h5>
+          <p>Honest recommendations, transparent pricing, and no-pressure consultations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="py-5 bg-white">
+  <div class="container">
+    <h2 class="text-center mb-5" data-aos="fade-down">What Our Customers Say</h2>
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-aos="fade-up">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="testimonial-item text-center">
+                <p class="testimonial-text">"CoolLiveKlima installed our office AC system and did an exceptional job. They were professional, clean, and completed the work ahead of schedule."</p>
+                <div class="testimonial-author">
+                  <h5>Mikhail Ivanov</h5>
+                  <p class="text-muted">Office Manager, TechSolutions LLC</p>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="testimonial-item text-center">
+                <p class="testimonial-text">"After a bad experience with another company, CoolLiveKlima restored my faith in HVAC professionals. Their technician was knowledgeable and courteous."</p>
+                <div class="testimonial-author">
+                  <h5>Elena Volkova</h5>
+                  <p class="text-muted">Homeowner, Moscow</p>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="testimonial-item text-center">
+                <p class="testimonial-text">"We've used CoolLiveKlima for three different properties. Consistent quality every time. Their maintenance plan keeps our systems running perfectly."</p>
+                <div class="testimonial-author">
+                  <h5>Sergei Kuznetsov</h5>
+                  <p class="text-muted">Property Manager, EliteRealty</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section" data-aos="fade-up">
+  <div class="container">
+    <h2>Ready to Experience the CoolLiveKlima Difference?</h2>
+    <p class="lead mt-3">Contact us today to discuss your air conditioning needs.</p>
+
+    <div class="cta-buttons">
+      <a href="/install" class="btn btn-primary btn-lg">Request Installation</a>
+      <a href="tel:+74951234567" class="btn btn-outline-primary btn-lg">Call Now</a>
+    </div>
+  </div>
+</section>
 
 <footer class="bg-dark text-white py-4">
     <div class="container">
@@ -505,45 +244,10 @@
     </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-<script>
-    // Scroll animation
-    const fadeElements = document.querySelectorAll('.fade-in-section');
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({ duration: 700, once: true });</script>
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    fadeElements.forEach(element => {
-        observer.observe(element);
-    });
-
-    // Progress bars animation
-    function animateProgressBars() {
-        const progressBars = document.querySelectorAll('.progress-bar');
-        progressBars.forEach(bar => {
-            const width = bar.style.width;
-            bar.style.width = '0';
-            setTimeout(() => {
-                bar.style.width = width;
-            }, 100);
-        });
-    }
-
-    // Run animations on load
-    window.addEventListener('load', animateProgressBars);
-</script>
 </body>
 </html>

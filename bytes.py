@@ -17,5 +17,5 @@ def image_to_bytes(image_path, format='JPEG'):
             return byte_data
 
     except Exception as e:
-        print(f"Ошибка при конвертации изображения: {e}")
+        print(f'Ошибка при конвертации изображения: {e}')
         return None

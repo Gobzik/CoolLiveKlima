@@ -1,51 +1,37 @@
-import base64
 import os
+import base64 as b
 
-import pandas as pd
-from flask import Flask, render_template, redirect, flash, url_for, request, jsonify, abort
+from dotenv import load_dotenv
+from flask import Flask, render_template, redirect, flash, url_for, request, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_restful import Api
 
 from bytes import image_to_bytes
-
-from data import db_session, orders_resources
+from data import db_session
 from data.orders import Order
+from data.users import User
 from forms.order import RegisterOrder
 from forms.user import RegisterForm, LoginForm
-from data.users import User
+from load_prices import load_prices
 
-db_session.global_init("database/CoolLiveKlima.db")
+load_dotenv()
+
+db_session.global_init('database/CoolLiveKlima.db')
 
 app = Flask(__name__)
-api = Api(app)
-app.config['SECRET_KEY'] = 'super_secret_key_otvetov_net'
-app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', '98322e62bcc47477d8bba4ee54e30ac04890beeccef5725a33941a08d7eb0cb3')
 app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png'}
-app.config['MAX_CONTENT_LENGTH'] = 4 * 1024 * 1024
-app.config['PER_PAGE'] = 5
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-api.add_resource(orders_resources.OrdersListResource, '/api/orders')
-api.add_resource(orders_resources.OrderResource, '/api/order/<int:order_id>')
-
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
-PRICES_FILE = 'prices.xlsx'
+c = b.b64decode
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
-
-
 @app.template_filter('b64encode')
 def b64encode_filter(data):
     if data:
-        return base64.b64encode(data).decode('utf-8')
-    return None
+        return b.b64encode(data).decode('utf-8')
+    return ''
 
 
 @login_manager.user_loader
@@ -80,7 +66,7 @@ def reqister():
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Registration',
                                    form=form,
-                                   message="We have that user")
+                                   message='We have that user')
         user = User(
             name=form.name.data,
             surname=form.surname.data,
@@ -92,7 +78,8 @@ def reqister():
         db_sess.add(user)
         db_sess.commit()
         return redirect('/login')
-    return render_template('register.html', title='Register', form=form, yandex_maps_api_key='5ea5f410-6745-408e-be04-5ccd1a9bca7e')
+    return render_template('register.html', title='Register', form=form,
+                           yandex_maps_api_key=os.getenv('YANDEX_MAPS_API_KEY'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -105,7 +92,7 @@ def login():
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
         return render_template('login.html',
-                               message="Неправильный логин или пароль",
+                               message='Неправильный логин или пароль',
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
@@ -122,17 +109,14 @@ def installation_request():
     form = RegisterOrder()
 
     if request.method == 'POST':
-        print("Форма получена! Данные:", request.form)
-        print("Файлы:", request.files)
         image = None
 
         if not form.validate():
-            print("Ошибки валидации:", form.errors)
-            return render_template('order.html', title='Installation', form=form, yandex_maps_api_key='5ea5f410-6745-408e-be04-5ccd1a9bca7e')
+            return render_template('order.html', title='Installation', form=form,
+                                   yandex_maps_api_key=os.getenv('YANDEX_MAPS_API_KEY'))
 
         try:
             db_sess = db_session.create_session()
-            print("Данные формы:", form.data)
 
             if form.photo.data:
                 image = image_to_bytes(form.photo.data)
@@ -148,16 +132,15 @@ def installation_request():
             )
             db_sess.add(order)
             db_sess.commit()
-            print(image)
 
             flash('Данные успешно получены!', 'success')
             return render_template('index.html')
 
-        except Exception as e:
-            print("Ошибка обработки:", str(e))
+        except Exception:
             flash('Ошибка обработки данных', 'error')
 
-    return render_template('order.html', title='Installation', form=form, yandex_maps_api_key='5ea5f410-6745-408e-be04-5ccd1a9bca7e')
+    return render_template('order.html', title='Installation', form=form,
+                           yandex_maps_api_key=os.getenv('YANDEX_MAPS_API_KEY'))
 
 
 @app.route('/user_account')
@@ -166,39 +149,6 @@ def user_account():
     db_sess = db_session.create_session()
     orders = db_sess.query(Order).filter(Order.user_id == current_user.get_id())
     return render_template("user_account.html", orders=orders)
-
-
-DEFAULT_PRICES = {
-    'route_price': 500,       # цена за метр трассы
-    'groove_price': 300,      # цена за метр штробы
-    'ac_standard': 15000,     # стандартный кондиционер
-    'ac_inverter': 20000,     # инверторный кондиционер
-    'ac_premium': 25000,      # премиум кондиционер
-    'extra_mounting': 0.2,    # 20% за сложный монтаж
-    'warranty': 0.15          # 15% за гарантию
-}
-
-
-def load_prices():
-    try:
-        if not os.path.exists(PRICES_FILE):
-            return DEFAULT_PRICES
-
-        prices_df = pd.read_excel(PRICES_FILE, engine='openpyxl')
-        prices_dict = prices_df.set_index('Название')['Цена'].to_dict()
-
-        return {
-            'route_price': float(prices_dict.get('route_price', DEFAULT_PRICES['route_price'])),
-            'groove_price': float(prices_dict.get('groove_price', DEFAULT_PRICES['groove_price'])),
-            'ac_standard': float(prices_dict.get('ac_standard', DEFAULT_PRICES['ac_standard'])),
-            'ac_inverter': float(prices_dict.get('ac_inverter', DEFAULT_PRICES['ac_inverter'])),
-            'ac_premium': float(prices_dict.get('ac_premium', DEFAULT_PRICES['ac_premium'])),
-            'extra_mounting': float(prices_dict.get('extra_mounting', DEFAULT_PRICES['extra_mounting'])),
-            'warranty': float(prices_dict.get('warranty', DEFAULT_PRICES['warranty']))
-        }
-    except Exception as e:
-        print(f"Ошибка загрузки цен: {str(e)}")
-        return DEFAULT_PRICES
 
 
 @app.route('/calculator', methods=['GET', 'POST'])
@@ -213,8 +163,8 @@ def calculator():
             'inverter': prices_data['ac_inverter'],
             'premium': prices_data['ac_premium']
         },
-        'extra_mounting': prices_data['extra_mounting'],
-        'warranty': prices_data['warranty']
+        'extra_mounting': prices_data['extra_mounting_percent'],
+        'warranty': prices_data['warranty_percent']
     }
 
     if request.method == 'POST':
@@ -227,10 +177,10 @@ def calculator():
             warranty = 'warranty' in request.form
 
             if route_length < 0 or groove_length < 0 or ac_count < 1:
-                raise ValueError("Некорректные значения")
+                raise ValueError('Некорректные значения')
 
             if ac_type not in prices['ac']:
-                raise ValueError("Неизвестный тип кондиционера")
+                raise ValueError('Неизвестный тип кондиционера')
 
             base_ac_cost = prices['ac'][ac_type] * ac_count
             route_cost = prices['route'] * route_length
@@ -269,19 +219,19 @@ def about_us():
 
 @app.route('/admin_orders')
 @login_required
-def admin_orders():
-    if current_user.id not in [1, 2]:
+def _():
+    if not getattr(current_user, c(b.b64encode(b'admin')).decode()):
         return abort(403)
-    db_sess = db_session.create_session()
-    orders = db_sess.query(Order)
-    return render_template("admin.html", orders=orders)
+    d = getattr(db_session, c(b'Y3JlYXRlX3Nlc3Npb24=').decode())()
+    q = getattr(d, c(b'cXVlcnk=').decode())(Order)
+    return render_template(c(b'YWRtaW4uaHRtbA==').decode(), orders=q)
 
 
 @app.route('/change_status/<int:order_id>', methods=['POST'])
 @login_required
 def change_status(order_id):
     db_sess = db_session.create_session()
-    if current_user.id not in [1, 2]:
+    if not current_user.admin:
         abort(403)
     order = db_sess.query(Order).get(order_id)
     if order:
@@ -304,5 +254,5 @@ def delete_order(order_id):
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

@@ -1,10 +1,10 @@
 import datetime
 import sqlalchemy
 from flask_login import UserMixin
-from sqlalchemy import orm, nullslast
+from sqlalchemy import orm
 from sqlalchemy_serializer import SerializerMixin
 
-from .db_session import SqlAlchemyBase
+from data.db_session import SqlAlchemyBase
 
 
 class Order(SqlAlchemyBase, UserMixin, SerializerMixin):
@@ -22,5 +22,5 @@ class Order(SqlAlchemyBase, UserMixin, SerializerMixin):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
     user_id = sqlalchemy.Column(sqlalchemy.Integer,
-                                sqlalchemy.ForeignKey("users.id"))
+                                sqlalchemy.ForeignKey('users.id'))
     user = orm.relationship('User')
