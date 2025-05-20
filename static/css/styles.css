@@ -230,3 +230,15 @@ body {
             width: 100%;
             transition: all 0.3s;
         }
+
+footer {
+            background-color: #A498DE;
+            color: white;
+        }
+footer a {
+            color: #e0eaff;
+            transition: color 0.3s;
+        }
+footer a:hover {
+            color: #ffffff;
+        }

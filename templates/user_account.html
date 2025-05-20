@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Мои заказы</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.svg') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
@@ -11,54 +12,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <style>
-        body {
-            background-color: #f0f4f8;
-            color: #333;
-        }
-        .card {
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background-color: #ffffff;
-            border-left: 5px solid #A498DE;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .rounded-circle {
-            border: 3px solid #e0e0e0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .btn-outline-danger {
-            transition: all 0.3s ease;
-            border-color: #A498DE;
-            color: #A498DE;
-        }
-        .btn-outline-danger:hover {
-            background-color: #A498DE;
-            color: white;
-        }
-        .badge.bg-warning {
-            background-color: #87bdd8 !important;
-            color: #fff;
-        }
-        .badge.bg-success {
-            background-color: #A498DE !important;
-        }
-        footer {
-            background-color: #A498DE;
-            color: white;
-        }
-        footer a {
-            color: #e0eaff;
-            transition: color 0.3s;
-        }
-        footer a:hover {
-            color: #ffffff;
-        }
-    </style>
+
 </head>
 <body>
 <!-- Header -->
@@ -75,21 +29,26 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/install">Installation</a>
+            <a class="nav-link" href="/install">Installation</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/about_us">About us</a>
           </li>
         </ul>
+          <div class="d-flex align-items-center">
+                    <div class="lang-switcher" id="langSwitcher">
+                        <span class="lang-flag">🇬🇧</span> <span class="lang-text">EN</span>
+                    </div>
+          </div>
         <div class="d-flex">
           {% if current_user.is_authenticated %}
             <a class="navbar-brand logout" href="/user_account">{{ current_user.name }}</a>
           {% else %}
             <form action="/login" method="get">
-              <button type="submit" class="btn btn-primary entrance">Log in</button>
+              <button type="submit" class="btn btn-primary entrance btn-new">Log in</button>
             </form>
             <form action="/register" method="get">
-              <button type="submit" class="btn btn-primary sign_up">Sign up</button>
+              <button type="submit" class="btn btn-primary sign_up btn-new">Sign up</button>
             </form>
           {% endif %}
         </div>
